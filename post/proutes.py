@@ -1,6 +1,6 @@
 """post related routes"""
 from flask import Blueprint, flash, redirect, render_template, request, url_for
-from flask_login import current_user, login_required
+from flask_login import current_user  # login_required
 from allwebforms import PostForm
 from data_models import db, Post
 
@@ -23,14 +23,13 @@ def posts_all():
 
 
 @post_bp.route("/add", methods=["GET", "POST"])
-@login_required
+# @login_required
 def post_add():
-    """Add pos"""
-    if not current_user.is_authenticated:
-        flash("You need to login first")
-        return redirect("/users/login")
-        # return redirect(url_for("user.login"))
-
+    """Add post"""
+    # if not current_user.is_authenticated:
+    #     flash("You need to login first")
+    #     return redirect("/users/login")
+    # return redirect(url_for("user.login"))
     form = PostForm()
     if form.validate_on_submit():
         post = Post(
@@ -48,21 +47,21 @@ def post_add():
 
 
 @post_bp.route("/post/update/<int:post_id>/", methods=["GET", "POST"])
-@login_required
+# @login_required
 def post_update(post_id):
     """Update post"""
     post = Post.query.get_or_404(post_id)
-    if not current_user.id == post.author_id:
-        flash("You can only update your own post")
-        return redirect("/posts")
+    # if not current_user.id == post.author_id:
+    #     flash("You can only update your own post")
+    #     return redirect("/posts")
     if post is None:
         flash("post not found")
         return redirect("/posts/all")
     form = PostForm(obj=post)
     if request.method == "POST":
-        post.name = request.form.get("name").title().strip()
-        post.postname = request.form.get("postname").strip()
-        post.email = request.form.get("email").strip()
+        post.title = request.form.get("title").title().strip()
+        post.subtitle = request.form.get("subtitle").strip()
+        post.content = request.form.get("content").strip()
         db.session.commit()
         flash(f"<strong>{form.postname.data}</strong> has been updated")
         reset_post_form(form)
@@ -73,13 +72,13 @@ def post_update(post_id):
 
 
 @post_bp.route("/post/delete/<int:post_id>/", methods=["GET", "POST"])
-@login_required
+# @login_required
 def post_delete(post_id):
     """Delete post"""
+    # if not current_user.id == post.author_id:
+    #     flash("You can only delete your own post")
+    #     return redirect("/posts")
     post = Post.query.get_or_404(post_id)
-    if not current_user.id == post.author_id:
-        flash("You can only delete your own post")
-        return redirect("/posts")
     if post is None:
         flash("post not found")
         return redirect("/posts")

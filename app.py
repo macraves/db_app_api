@@ -21,24 +21,16 @@ migrate = Migrate(app, db)
 app.register_blueprint(user_bp, url_prefix="/users")
 app.register_blueprint(post_bp, url_prefix="/posts")
 
-
+# Flask login manager instanciate
 login_manager = LoginManager()
 login_manager.init_app(app)
-login_manager.login_view = "login"
+login_manager.login_view = "user.login"
 
 
 @login_manager.user_loader
 def load_user(user_id):
     """Load user by its id"""
     return User.query.get(int(user_id))
-
-
-class RenderError(Exception):
-    """Render error for the Flask app."""
-
-    def __init__(self, message):
-        super().__init__(message)
-        self.message = message
 
 
 @app.route("/")

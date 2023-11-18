@@ -24,6 +24,14 @@ def login():
     return render_template("user_login.html", header="Login", form=form)
 
 
+# Create dashboard route
+@user_bp.route("/dashboard")
+@login_required
+def dashboard():
+    """Dashboard route for the users."""
+    return render_template("dashboard.html", header="Dashboard")
+
+
 @user_bp.route("/logout")
 @login_required
 def logout():
