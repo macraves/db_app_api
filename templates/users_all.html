@@ -1,0 +1,14 @@
+{% extends 'base.html' %}{% block content %}
+<h1>ALL USERS:</h1>
+<table class="table table-hover table-bordered table-striped">
+	{% for user in users %}
+	<tr>
+		<td>
+			{{ user.id }}.
+			<a href="{{url_for('user_update',user_id=user.id)}}"> {{ user.name }}</a> aka {{
+			user.username }}, email: {{ user.email }}
+		</td>
+	</tr>
+	{% endfor %}
+</table>
+{% endblock%}
