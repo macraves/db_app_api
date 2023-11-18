@@ -5,8 +5,8 @@
 	<tr>
 		<td>
 			{{ user.id }}.
-			<a href="{{url_for('user_update',user_id=user.id)}}"> {{ user.name }}</a> aka {{
-			user.username }}, email: {{ user.email }}
+			<a href="{{url_for('user.user_update',user_id=user.id)}}"> {{ user.name }}</a> aka
+			{{ user.username }}, email: {{ user.email }}
 		</td>
 	</tr>
 	{% endfor %}

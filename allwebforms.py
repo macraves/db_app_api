@@ -15,6 +15,7 @@ class BookForm(FlaskForm):
 
     title = StringField("Title", validators=[DataRequired()])
     author = StringField("Author", validators=[DataRequired()])
+    condtion = StringField("Condition")
     submit = SubmitField("Submit")
 
 

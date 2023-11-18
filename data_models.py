@@ -28,6 +28,7 @@ class User(db.Model, UserMixin):
     username = db.Column(db.String(30), nullable=False, unique=True)
     name = db.Column(db.String(100), nullable=False)
     email = db.Column(db.String(100), nullable=False, unique=True)
+    about_user = db.Column(db.String(100), nullable=True)
     added_date = db.Column(db.DateTime, default=datetime.utcnow)
     password_hash = db.Column(db.String(128))
     books = db.relationship("Book", backref="user", lazy=True)
@@ -72,6 +73,7 @@ class Book(db.Model):
     author_id = db.Column(db.Integer, db.ForeignKey("authors.id"))
     user_id = db.Column(db.Integer, db.ForeignKey("users.id"))
     title = db.Column(db.String(100), nullable=False)
+    condition = db.Column(db.String(100), nullable=False)
     added_date = db.Column(db.DateTime, default=datetime.utcnow)
 
     def __repr__(self) -> str:
