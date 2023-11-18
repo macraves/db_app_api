@@ -1,10 +1,10 @@
 """Flask app for database, create its database extension, and create its table."""
-from datetime import datetime
 from flask import Flask, render_template
 from flask_migrate import Migrate
 from flask_login import LoginManager
-from data_models import db, MYSQL_URI, User
+from data_models import datetime, db, MYSQL_URI, User
 from user.uroutes import user_bp
+from post.proutes import post_bp
 
 app = Flask(__name__)
 # Create sqlite3 library.db by defined file path
@@ -18,7 +18,8 @@ with app.app_context():
 
 migrate = Migrate(app, db)
 # Registry for blueprints
-app.register_blueprint(user_bp)
+app.register_blueprint(user_bp, url_prefix="/users")
+app.register_blueprint(post_bp, url_prefix="/posts")
 
 
 login_manager = LoginManager()

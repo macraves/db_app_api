@@ -1,0 +1,15 @@
+{% extends 'base.html' %}{% block content %}
+<h1>ALL POSTS</h1>
+<div class="shadow p-3 mb-5 bg-body-tertiary rounded">
+	{% for post in posts %}
+	<div>{{ post.title }}</div>
+	<div>{{ post.subtitle }}</div>
+	<div>{{ post.content }}</div>
+	<div>
+		<a href="{{url_for('post.post_update',post_id=post.id)}}" class="btn btn-primary"
+			>Edit</a
+		>
+	</div>
+	{% endfor %}
+</div>
+{% endblock%}

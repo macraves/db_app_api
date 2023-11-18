@@ -21,7 +21,7 @@ def login():
             flash(f"{username} logged in successfully")
             return redirect(url_for("user.users_all"))
         flash("Invalid username or password. Try again!")
-    return render_template("user.user_login.html", header="Login", form=form)
+    return render_template("user_login.html", header="Login", form=form)
 
 
 @user_bp.route("/logout")
@@ -29,7 +29,7 @@ def login():
 def logout():
     """Logout route for the users."""
     logout_user()
-    flash(f"{current_user.username} logged out successfully")
+    flash(f"<strong>{current_user.username}</strong> logged out successfully")
     return redirect(url_for("user.login"))
 
 
@@ -57,16 +57,13 @@ def user_add():
         db.session.add(user)
         db.session.commit()
         flash(f"<strong>{form.username.data}</strong> has been added")
-        form.name.data = ""
-        form.username.data = ""
-        form.email.data = ""
-        form.password1.data = ""
-        form.password2.data = ""
-        return redirect("/users")
+        reset_user_form(form)
+        return redirect(url_for("user.users_all"))
     return render_template("user_add.html", header="Add User", form=form)
 
 
 @user_bp.route("/user/update/<int:user_id>/", methods=["GET", "POST"])
+@login_required
 def user_update(user_id):
     """Update user"""
     user = User.query.get_or_404(user_id)
@@ -80,6 +77,7 @@ def user_update(user_id):
         user.email = request.form.get("email").strip()
         db.session.commit()
         flash(f"<strong>{form.username.data}</strong> has been updated")
+        reset_user_form(form)
         return redirect(url_for("user.users_all"))
     return render_template(
         "user_update.html", header="Update User", form=form, user_id=user_id
@@ -87,6 +85,7 @@ def user_update(user_id):
 
 
 @user_bp.route("/user/delete/<int:user_id>/", methods=["GET", "POST"])
+@login_required
 def user_delete(user_id):
     """Delete user"""
     user = User.query.get_or_404(user_id)
@@ -97,3 +96,12 @@ def user_delete(user_id):
     db.session.commit()
     flash(f"<strong>{user.username}</strong> has been deleted")
     return redirect("/users")
+
+
+def reset_user_form(form):
+    """Reset user form"""
+    form.name.data = ""
+    form.username.data = ""
+    form.email.data = ""
+    form.password1.data = ""
+    form.password2.data = ""
