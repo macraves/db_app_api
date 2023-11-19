@@ -31,6 +31,7 @@ class User(db.Model, UserMixin):
     about_user = db.Column(db.String(100), nullable=True)
     added_date = db.Column(db.DateTime, default=datetime.utcnow)
     password_hash = db.Column(db.String(128))
+    # User relationship with Book and Post
     books = db.relationship("Book", backref="user", lazy=True)
     posts = db.relationship("Post", backref="user", lazy=True)
 
@@ -58,8 +59,8 @@ class Author(db.Model):
     __tablename__ = "authors"
     id = db.Column(db.Integer, primary_key=True)
     name = db.Column(db.String(100), nullable=False)
-    birth_date = db.Column(db.DateTime, default=datetime.utcnow)
-    death_date = db.Column(db.DateTime, default=datetime.utcnow)
+    birth_date = db.Column(db.DateTime, nullable=True)
+    death_date = db.Column(db.DateTime, nullable=True)
     added_date = db.Column(db.DateTime, default=datetime.utcnow)
     books = db.relationship("Book", backref="author", lazy=True)
 
@@ -88,10 +89,10 @@ class Post(db.Model):
     id = db.Column(db.Integer, primary_key=True, autoincrement=True)
     title = db.Column(db.String(150), nullable=False)
     subtitle = db.Column(db.String(100), nullable=False)
-    date_posted = db.Column(db.DateTime, default=datetime.utcnow)
+    added_date = db.Column(db.DateTime, default=datetime.utcnow)
     author_id = db.Column(db.Integer, db.ForeignKey("users.id"))
     # Large text
     content = db.Column(db.Text, nullable=False)
 
     def __repr__(self) -> str:
-        return f"Blog Post('{self.title}', '{self.subtitle}', '{self.date_posted}')"
+        return f"Blog Post('{self.title}', '{self.subtitle}', '{self.added_date}')"

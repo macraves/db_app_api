@@ -1,0 +1,23 @@
+{% extends 'base.html' %}{% block content %}
+<div class="col-8 shadow p-3 mb-5 bg-body-tertiary rounded">
+	<h1>Updating Book:</h1>
+	<form method="POST">
+		{{ form.hidden_tag() }}
+		<div>
+			{{ form.title.label(class="form-label") }}{{ form.title(class="form-control") }}
+		</div>
+		<div>
+			{{ form.condition.label(class="form-label") }}{{
+			form.condition(class="form-control") }}
+		</div>
+		<br />
+		<div>
+			<a href="{{url_for('book.books_all')}}" class="btn btn-secondary">Back</a>
+			{{ form.submit(class="btn btn-primary") }}
+			<a href="{{url_for('book.book_delete', book_id=book_id)}}" class="btn btn-danger"
+				>Delete</a
+			>
+		</div>
+	</form>
+</div>
+{% endblock %}

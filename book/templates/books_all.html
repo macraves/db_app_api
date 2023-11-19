@@ -1,0 +1,34 @@
+{% extends 'base.html' %}{% block content %}
+<h1>ALL BOOKS</h1>
+<div class="shadow p-3 mb-5 bg-body-tertiary rounded col-8">
+	{% for book in books %}
+	<table class="table table-hover table-bordered table-striped">
+		<tr>
+			<td>
+				<div>
+					{{ book.id }}.
+					<a href="{{url_for('book.get_book',book_id=book.id)}}"> {{ book.title }}</a>
+				</div>
+				<div><strong>Author ID: {{ book.author_id}}</strong></div>
+				<div><strong>Author Name: {{ book.author.name}}</strong></div>
+				<div><strong>User ID: {{ book.user_id }}</strong></div>
+				<div><strong>Condition: {{ book.condition }}</div>
+				<div><strong>date added:</strong> {{ book.added_date }}</div>
+				{% if current_user.id == 1 or current_user.id == book.user_id %}
+				<div>
+					<a
+						href="{{url_for('book.book_update',book_id=book.id)}}"
+						class="btn btn-primary"
+						>Update</a
+					>
+					<a href="{{url_for('book.book_delete',book_id=book.id)}}" class="btn btn-danger"
+						>Delete</a
+					>
+				</div>
+				{% endif %}
+			</td>
+		</tr>
+	</table>
+	{% endfor %}
+</div>
+{% endblock%}

@@ -1,5 +1,5 @@
 {% extends 'base.html' %}{% block content %}
-<h1>Adding New Post</h1>
+<h1>Adding New Book</h1>
 <div class="shadow p-3 mb-5 bg-body-tertiary rounded col-8">
 	<form method="POST">
 		{{ form.hidden_tag() }}
@@ -7,15 +7,14 @@
 			{{ form.title.label(class="form-label") }}{{ form.title(class="form-control") }}
 		</div>
 		<div>
-			{{ form.subtitle.label(class="form-label") }}{{ form.subtitle(class="form-control")
-			}}
+			{{ form.author.label(class="form-label") }}{{ form.author(class="form-control") }}
 		</div>
 		<div>
-			{{ form.content.label(class="form-label") }}{{ form.content(class="form-control") }}
+			{{ form.condition.label(class="form-label") }} {{
+			form.condition(class="form-control") }}
 		</div>
 		<br />
 		<div>{{ form.submit(class="btn btn-primary") }}</div>
 	</form>
-	{{ ckeditor.load() }} {{ ckeditor.config(name='content') }}
 </div>
 {% endblock %}

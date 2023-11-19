@@ -1,0 +1,26 @@
+{% extends 'base.html' %}{% block content %}
+<h1>ALL AUTHORS</h1>
+<div class="shadow p-3 mb-5 bg-body-tertiary rounded col-8">
+	{% for author in authors %}
+	<table class="table table-hover table-bordered table-striped">
+		<tr>
+			<td>
+				<div><strong>Author ID: {{ author.id}}</strong></div>
+				<div><strong>Author Name: {{ author.name}}</strong></div>
+				<div><strong>Brith Date: {{ author.birth_date }}</strong></div>
+				<div><strong>Death Date: {{ author.death_date }}</div>
+				<div><strong>Date Added:</strong> {{ author.added_date }}</div>
+				{% if current_user.id == 1 %}
+				<div>
+					
+					<a href="{{url_for('author.author_delete',author_id=author.id)}}" class="btn btn-danger"
+						>Delete</a
+					>
+				</div>
+				{% endif %}
+			</td>
+		</tr>
+	</table>
+	{% endfor %}
+</div>
+{% endblock%}

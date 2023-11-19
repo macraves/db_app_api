@@ -8,6 +8,26 @@ from data_models import db, User
 user_bp = Blueprint("user", __name__, url_prefix="/users", template_folder="templates")
 
 
+class UserError(Exception):
+    """User error"""
+
+    def __init__(self, message):
+        self.message = message
+
+
+# Admin API
+@user_bp.route("/admin")
+@login_required
+def admin():
+    """Admin page"""
+    idx = current_user.id
+    if idx == 1:
+        flash("Welcome to the admin page")
+        return render_template("admin.html")
+    flash("You are not authorized to view this page")
+    return redirect("/users")
+
+
 @user_bp.route("/login", methods=["GET", "POST"])
 def login():
     """Login route for the users."""
@@ -19,17 +39,37 @@ def login():
         if user and user.verify_password(password):
             login_user(user)
             flash(f"{username} logged in successfully")
-            return redirect(url_for("user.users_all"))
+            return redirect(url_for("user.dashboard"))
         flash("Invalid username or password. Try again!")
     return render_template("user_login.html", header="Login", form=form)
 
 
 # Create dashboard route
-@user_bp.route("/dashboard")
+@user_bp.route("/dashboard", methods=["GET", "POST"])
 @login_required
 def dashboard():
     """Dashboard route for the users."""
-    return render_template("dashboard.html", header="Dashboard")
+    user_id = current_user.id
+    user = User.query.get_or_404(user_id)
+    if current_user.id != user.id:
+        flash("You can only update your own account")
+        return redirect("/users")
+    if user is None:
+        flash("User not found")
+        return redirect("/users")
+    form = UserForm(obj=user)
+    if request.method == "POST":
+        user.name = request.form.get("name").title().strip()
+        user.username = request.form.get("username").strip()
+        user.email = request.form.get("email").strip()
+        try:
+            db.session.commit()
+            flash(f"<strong>{form.username.data}</strong> has been updated")
+        except UserError:
+            flash("Operation failed during the update process")
+    return render_template(
+        "dashboard.html", header="Dashboard", form=form, user_id=user_id
+    )
 
 
 @user_bp.route("/logout")
@@ -37,11 +77,11 @@ def dashboard():
 def logout():
     """Logout route for the users."""
     logout_user()
-    flash(f"<strong>{current_user.username}</strong> logged out successfully")
-    return redirect(url_for("user.login"))
+    flash("User logged out successfully")
+    return redirect("/users/login")
 
 
-@user_bp.route("/all")
+@user_bp.route("/")
 def users_all():
     """Users page"""
     users = User.query.all()
@@ -62,11 +102,14 @@ def user_add():
         if user is None or not user.verify_password(form.password1.data.strip()):
             flash("Invalid username or password")
             return render_template("user_add.html", header="Add User", form=form)
-        db.session.add(user)
-        db.session.commit()
-        flash(f"<strong>{form.username.data}</strong> has been added")
-        reset_user_form(form)
-        return redirect(url_for("user.users_all"))
+        try:
+            db.session.add(user)
+            db.session.commit()
+            flash(f"<strong>{form.username.data}</strong> has been added")
+            reset_user_form(form)
+        except UserError:
+            flash("Operation failed during the add process")
+        return redirect(url_for("user.login"))
     return render_template("user_add.html", header="Add User", form=form)
 
 
@@ -83,9 +126,12 @@ def user_update(user_id):
         user.name = request.form.get("name").title().strip()
         user.username = request.form.get("username").strip()
         user.email = request.form.get("email").strip()
-        db.session.commit()
-        flash(f"<strong>{form.username.data}</strong> has been updated")
-        reset_user_form(form)
+        try:
+            db.session.commit()
+            flash(f"<strong>{form.username.data}</strong> has been updated")
+            reset_user_form(form)
+        except UserError:
+            flash("Operation failed during the update process")
         return redirect(url_for("user.users_all"))
     return render_template(
         "user_update.html", header="Update User", form=form, user_id=user_id
@@ -100,9 +146,12 @@ def user_delete(user_id):
     if user is None:
         flash("User not found")
         return redirect("/users")
-    db.session.delete(user)
-    db.session.commit()
-    flash(f"<strong>{user.username}</strong> has been deleted")
+    try:
+        db.session.delete(user)
+        db.session.commit()
+        flash(f"<strong>{user.username}</strong> has been deleted")
+    except UserError:
+        flash("Operation failed during the delete process")
     return redirect("/users")
 
 

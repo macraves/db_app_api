@@ -1,23 +1,26 @@
 {% extends 'base.html' %}{% block content %}
 <h1>Updating User Info:</h1>
-
-<form method="POST">
-	{{ form.hidden_tag() }}
-	<div>
-		{{ form.name.label(class="form-label") }}{{ form.name(class="form-control") }}
-	</div>
-	<div>
-		{{ form.username.label(class="form-label") }}{{ form.username(class="form-control") }}
-	</div>
-	<div>
-		{{ form.email.label(class="form-label") }}{{ form.email(class="form-control") }}
-	</div>
-	<br />
-	<div>
-		{{ form.submit(class="btn btn-primary") }}
-		<a href="{{url_for('user.user_delete', user_id=user_id)}}" class="btn btn-danger"
-			>Delete</a
-		>
-	</div>
-</form>
+<div class="shadow p-3 mb-5 bg-body-tertiary rounded col-8">
+	<form method="POST">
+		{{ form.hidden_tag() }}
+		<div>
+			{{ form.name.label(class="form-label") }}{{ form.name(class="form-control") }}
+		</div>
+		<div>
+			{{ form.username.label(class="form-label") }}{{ form.username(class="form-control")
+			}}
+		</div>
+		<div>
+			{{ form.email.label(class="form-label") }}{{ form.email(class="form-control") }}
+		</div>
+		<br />
+		<div>
+			<a href="{{url_for('user.users_all')}}" class="btn btn-secondary">Back</a>
+			{{ form.submit(class="btn btn-primary") }}
+			<a href="{{url_for('user.user_delete', user_id=user_id)}}" class="btn btn-danger"
+				>Delete</a
+			>
+		</div>
+	</form>
+</div>
 {% endblock %}

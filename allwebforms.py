@@ -2,12 +2,22 @@
 
 from flask_wtf import FlaskForm
 from wtforms.validators import DataRequired, EqualTo
-from wtforms.widgets import TextArea
+
+# from wtforms.widgets import TextArea
+from flask_ckeditor import CKEditorField
 from wtforms import (
     StringField,
     SubmitField,
     PasswordField,
+    DateTimeField,
 )
+
+
+class SearchPostContent(FlaskForm):
+    """Users instance, every user has its own name and unique email."""
+
+    searched = StringField("Searched", validators=[DataRequired()])
+    submit = SubmitField("Submit")
 
 
 # Create Author form
@@ -15,8 +25,8 @@ class AuthorForm(FlaskForm):
     """Books row properties"""
 
     name = StringField("Name", validators=[DataRequired()])
-    birth_date = StringField("Birth Date", validators=[DataRequired()])
-    death_date = StringField("Death Date", validators=[DataRequired()])
+    birth_date = DateTimeField("Birth Date", format="%Y-%m-%d %H:%M:%S")
+    death_date = DateTimeField("Death Date", format="%Y-%m-%d %H:%M:%S")
     submit = SubmitField("Submit")
 
 
@@ -25,7 +35,7 @@ class BookForm(FlaskForm):
 
     title = StringField("Title", validators=[DataRequired()])
     author = StringField("Author", validators=[DataRequired()])
-    condtion = StringField("Condition")
+    condition = StringField("Condition")
     submit = SubmitField("Submit")
 
 
@@ -55,7 +65,8 @@ class PostForm(FlaskForm):
     # variable = type(Label, parameters)
     title = StringField("Title", validators=[DataRequired()])
     subtitle = StringField("Subtitle", validators=[DataRequired()])
-    content = StringField("Content", validators=[DataRequired()], widget=TextArea())
+    content = CKEditorField("Content", validators=[DataRequired()])
+    # content = StringField("Content", validators=[DataRequired()], widget=TextArea())
     # it gets user_id from user table
     # author = StringField("Author", validators=[DataRequired()])
     submit = SubmitField("Submit")

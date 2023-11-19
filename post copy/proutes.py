@@ -82,6 +82,9 @@ def post_add():
 def post_update(post_id):
     """Update post"""
     post = Post.query.get_or_404(post_id)
+    if not current_user.id == post.author_id:
+        flash("You can only update your own post")
+        return redirect("/posts")
     if post is None:
         flash("post not found")
         return redirect("/posts/all")
@@ -107,6 +110,9 @@ def post_update(post_id):
 def post_delete(post_id):
     """Delete post"""
     post = Post.query.get_or_404(post_id)
+    if not current_user.id == post.author_id:
+        flash("You can only delete your own post")
+        return redirect("/posts")
     if post is None:
         flash("post not found")
         return redirect("/posts")

@@ -1,0 +1,25 @@
+{% extends 'base.html' %}{% block content %}
+<h1>Adding New Post</h1>
+<div class="shadow p-3 mb-5 bg-body-tertiary rounded col-8">
+	<form method="POST">
+		{{ form.hidden_tag() }}
+		<div>{{ post.title }}</div>
+		<div>{{ post.subtitle }}</div>
+		<div>{{ post.added_date }}</div>
+		<div>{{ post.content | safe }}</div>
+		<br />
+		<div>
+			<a href="{{url_for('post.posts_all')}}" class="btn btn-secondary">Back</a>
+			{% if current_user.id == post.author_id %}
+			<a href="{{url_for('post.post_update',post_id=post_id)}}" class="btn btn-primary"
+				>Update</a
+			>
+			<a href="{{url_for('post.post_delete',post_id=post_id)}}" class="btn btn-danger"
+				>Delete</a
+			>
+			{% endif %}
+		</div>
+	</form>
+	{{ ckeditor.load() }} {{ ckeditor.config(name='content') }}
+</div>
+{% endblock %}

@@ -15,6 +15,16 @@
 		<div class="collapse navbar-collapse" id="navbarSupportedContent">
 			<ul class="navbar-nav me-auto mb-2 mb-lg-0">
 				<li class="nav-item">
+					<a class="nav-link disabled" aria-disabled="true">Disabled</a>
+				</li>
+				{% if current_user.is_authenticated %} {% if current_user.id == 1 %}
+				<li class="nav-item">
+					<a class="nav-link active" aria-current="page" href="{{url_for('user.admin')}}"
+						>Admin</a
+					>
+				</li>
+				{% endif %}
+				<li class="nav-item">
 					<a
 						class="nav-link active"
 						aria-current="page"
@@ -27,17 +37,35 @@
 						>Logout</a
 					>
 				</li>
+				{% else %}
 				<li class="nav-item">
 					<a
 						class="nav-link active"
 						aria-current="page"
 						href="{{url_for('user.user_add')}}"
-						>Add User</a
+						>Sign Up</a
 					>
 				</li>
 				<li class="nav-item">
 					<a class="nav-link active" aria-current="page" href="{{url_for('user.login')}}"
 						>Login</a
+					>
+				</li>
+				{% endif %}
+				<li class="nav-item">
+					<a
+						class="nav-link active"
+						aria-current="page"
+						href="{{url_for('author.author_add')}}"
+						>Add Author</a
+					>
+				</li>
+				<li class="nav-item">
+					<a
+						class="nav-link active"
+						aria-current="page"
+						href="{{url_for('book.book_add')}}"
+						>Add Book</a
 					>
 				</li>
 				<li class="nav-item">
@@ -46,6 +74,22 @@
 						aria-current="page"
 						href="{{url_for('post.post_add')}}"
 						>Add Post</a
+					>
+				</li>
+				<li class="nav-item">
+					<a
+						class="nav-link active"
+						aria-current="page"
+						href="{{url_for('author.authors_all')}}"
+						>ALL AUTHORS</a
+					>
+				</li>
+				<li class="nav-item">
+					<a
+						class="nav-link active"
+						aria-current="page"
+						href="{{url_for('book.books_all')}}"
+						>ALL BOOKS</a
 					>
 				</li>
 				<li class="nav-item">
@@ -65,12 +109,19 @@
 					>
 				</li>
 			</ul>
-			<form class="d-flex" role="search">
+			<form
+				method="POST"
+				action="{{url_for('post.search')}}"
+				class="d-flex"
+				role="search"
+			>
+				{{ form.hidden_tag() }}
 				<input
 					class="form-control me-2"
 					type="search"
 					placeholder="Search"
 					aria-label="Search"
+					name="searched"
 				/>
 				<button class="btn btn-outline-success" type="submit">Search</button>
 			</form>

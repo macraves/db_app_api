@@ -15,9 +15,9 @@
 		{% include 'navbar.html' %}
 		<br />
 		{% if current_user.is_authenticated %}
-		<p><h1>Current user <strong>{{ current_user.username}}</strong></h1></p>
+		<p><h3>Current user <strong>{{ current_user.username}} ID: {{ current_user.id }}</strong></h3></p>
 		{% else %}
-		<p><h1><strong>Sign in please</strong></h1></p>
+		<a href="{{url_for('user.login')}}"><p><h3><strong>Sign in please</strong></h3></p></a>
 		{% endif %} {% for message in get_flashed_messages() %}
 		<div class="alert alert-warning alert-dismissible fade show" role="alert">
 			{{ message | safe }}.

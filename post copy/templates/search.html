@@ -1,0 +1,35 @@
+{% extends 'base.html' %}{% block content %}
+<h1>you searched for: {{searched}}</h1>
+<div class="shadow p-3 mb-5 bg-body-tertiary rounded">
+	{% for post in posts %}
+	<table class="table table-hover table-bordered table-striped">
+		<tr>
+			<td>
+				{% if current_user.id == post.author_id %}
+				<div>
+					{{ post.id }}.
+					<a href="{{url_for('post.post_update',post_id=post.id)}}"> {{ post.title }}</a>
+				</div>
+					
+				<div><strong>Author ID: {{ post.author_id}}</strong></div>
+				<div><strong>subtitle:</strong> {{ post.subtitle }}</div>
+				<!-- for admin -->
+				{% if current_user.id == 1 %}
+				<div><strong>date posted:</strong> {{ post.date_posted }}</div>
+				{% endif %}
+				<div><strong>content:</strong><br />{{ post.content | safe }}</div>
+				{% else %}
+				<div><strong>Post ID:</strong> {{ post.id }}.{{ post.title }}</div>
+				<div><strong>Author ID: {{ post.author_id}}</strong></div>
+				<div><strong>subtitle:</strong> {{ post.subtitle }}</div>
+				{% if current_user.id == 1 %}
+				<div><strong>date posted:</strong> {{ post.date_posted }}</div>
+				{% endif %}
+				<div><div><strong>content:</strong><br />{{ post.content | safe }}</div>
+				{% endif %}
+			</td>
+		</tr>
+	</table>
+	{% endfor %}
+</div>
+{% endblock%}

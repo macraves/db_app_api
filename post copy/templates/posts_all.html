@@ -12,7 +12,7 @@
 				<div><strong>Author ID: {{ post.author_id}}</strong></div>
 				<div><strong>subtitle:</strong> {{ post.subtitle }}</div>
 				<div><strong>content:</strong><br />{{ post.content | safe }}</div>
-				<div><strong>date posted:</strong> {{ post.added_date }}</div>
+				<div><strong>date posted:</strong> {{ post.date_posted }}</div>
 				{% if current_user.id == 1 or current_user.id == post.author_id %}
 				<div>
 					<a

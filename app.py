@@ -2,14 +2,22 @@
 from flask import Flask, render_template
 from flask_migrate import Migrate
 from flask_login import LoginManager
+from flask_ckeditor import CKEditor
 from data_models import datetime, db, MYSQL_URI, User
-from user.uroutes import user_bp
+from allwebforms import SearchPostContent
+from author.aroutes import author_bp
+from book.broutes import book_bp
 from post.proutes import post_bp
+from user.uroutes import user_bp
 
 app = Flask(__name__)
 # Create sqlite3 library.db by defined file path
 app.config["SQLALCHEMY_DATABASE_URI"] = MYSQL_URI
 app.config["SECRET_KEY"] = "sqlite3 app connection"
+
+# CKEditor adding instance
+ckeditor = CKEditor(app)
+
 # Initialize the app with the extension
 db.init_app(app)
 with app.app_context():
@@ -18,13 +26,23 @@ with app.app_context():
 
 migrate = Migrate(app, db)
 # Registry for blueprints
-app.register_blueprint(user_bp, url_prefix="/users")
+app.register_blueprint(author_bp, url_prefix="/authors")
+app.register_blueprint(book_bp, url_prefix="/books")
 app.register_blueprint(post_bp, url_prefix="/posts")
+app.register_blueprint(user_bp, url_prefix="/users")
+
 
 # Flask login manager instanciate
 login_manager = LoginManager()
 login_manager.init_app(app)
 login_manager.login_view = "user.login"
+
+
+@app.context_processor
+def base():
+    """Injection to base.html"""
+    form = SearchPostContent()
+    return {"form": form}
 
 
 @login_manager.user_loader
