@@ -48,6 +48,14 @@ def author_add():
         flash(f"<strong>{form.name.data}</strong> has been added")
         reset_author_form(form)
         return redirect("/")
+    else:
+        # Display form errors
+        for field, errors in form.errors.items():
+            for error in errors:
+                flash(
+                    f"Error in field '{getattr(form, field).label.text}': {error}",
+                    "error",
+                )
     return render_template("author_add.html", header="Add author", form=form)
 
 
@@ -58,20 +66,25 @@ def author_update(author_id):
     """Update author"""
     author = Author.query.get_or_404(author_id)
     if author is None:
-        flash("author not found")
+        flash("Author not found")
         return redirect("/")
     form = AuthorForm(obj=author)
-    if request.method == "POST":
-        author.name = form.name.data.title().strip()
-        author.birth_date = form.birth_date.data
-        author.death_date = form.death_date.data
+    if form.validate_on_submit():
+        form.populate_obj(author)
         try:
             db.session.commit()
-            flash(f"<strong>author ID: {author.id}</strong> has been updated")
-            reset_author_form(form)
+            flash(f"Author ID: {author.id} has been updated")
+            return redirect(url_for("author.authors_all"))
         except AuthorError:
             flash("Operation failed during the update process")
-        return redirect(url_for("author.authors_all"))
+    else:
+        # Display form errors
+        for field, errors in form.errors.items():
+            for error in errors:
+                flash(
+                    f"Error in field '{getattr(form, field).label.text}': {error}",
+                    "error",
+                )
     return render_template(
         "author_update.html", header="Update author", form=form, author_id=author_id
     )

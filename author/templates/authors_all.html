@@ -12,7 +12,9 @@
 				<div><strong>Date Added:</strong> {{ author.added_date }}</div>
 				{% if current_user.id == 1 %}
 				<div>
-					
+					<a href="{{url_for('author.author_update',author_id=author.id)}}" class="btn btn-primary"
+						>Update</a
+					>
 					<a href="{{url_for('author.author_delete',author_id=author.id)}}" class="btn btn-danger"
 						>Delete</a
 					>

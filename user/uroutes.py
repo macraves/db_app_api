@@ -62,6 +62,7 @@ def dashboard():
         user.name = request.form.get("name").title().strip()
         user.username = request.form.get("username").strip()
         user.email = request.form.get("email").strip()
+        user.about_user = request.form.get("about_user").strip()
         try:
             db.session.commit()
             flash(f"<strong>{form.username.data}</strong> has been updated")
@@ -97,6 +98,7 @@ def user_add():
             name=form.name.data.title().strip(),
             username=form.username.data.strip(),
             email=form.email.data.strip(),
+            about_user=form.about_user.data.strip(),
             password=form.password1.data.strip(),
         )
         if user is None or not user.verify_password(form.password1.data.strip()):
@@ -126,6 +128,7 @@ def user_update(user_id):
         user.name = request.form.get("name").title().strip()
         user.username = request.form.get("username").strip()
         user.email = request.form.get("email").strip()
+        user.about_user = request.form.get("about_user").strip()
         try:
             db.session.commit()
             flash(f"<strong>{form.username.data}</strong> has been updated")

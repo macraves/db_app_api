@@ -1,7 +1,9 @@
 """Html form objects for flask app."""
 
 from flask_wtf import FlaskForm
-from wtforms.validators import DataRequired, EqualTo
+from wtforms.validators import DataRequired, EqualTo, Length, Optional
+
+# from wtforms.fields.html5 import DateField
 
 # from wtforms.widgets import TextArea
 from flask_ckeditor import CKEditorField
@@ -9,7 +11,8 @@ from wtforms import (
     StringField,
     SubmitField,
     PasswordField,
-    DateTimeField,
+    # DateTimeField,
+    DateField,
 )
 
 
@@ -24,9 +27,17 @@ class SearchPostContent(FlaskForm):
 class AuthorForm(FlaskForm):
     """Books row properties"""
 
-    name = StringField("Name", validators=[DataRequired()])
-    birth_date = DateTimeField("Birth Date", format="%Y-%m-%d %H:%M:%S")
-    death_date = DateTimeField("Death Date", format="%Y-%m-%d %H:%M:%S")
+    name = StringField("Name", validators=[Length(min=1)])
+    birth_date = DateField(
+        "Birth Date",
+        format="%Y-%m-%d",  # Specify the format for displaying the date
+        validators=[Optional()],
+    )
+    death_date = DateField(
+        "Death Date",
+        format="%Y-%m-%d",  # Specify the format for displaying the date
+        validators=[Optional()],
+    )
     submit = SubmitField("Submit")
 
 
@@ -35,7 +46,7 @@ class BookForm(FlaskForm):
 
     title = StringField("Title", validators=[DataRequired()])
     author = StringField("Author", validators=[DataRequired()])
-    condition = StringField("Condition")
+    condition = StringField("Condition", validators=[Optional()])
     submit = SubmitField("Submit")
 
 
@@ -79,6 +90,7 @@ class UserForm(FlaskForm):
     name = StringField("Name", validators=[DataRequired()])
     username = StringField("Username", validators=[DataRequired()])
     email = StringField("email", validators=[DataRequired()])
+    about_user = StringField("About User", validators=[Optional()])
     password1 = PasswordField(
         "password",
         validators=[
