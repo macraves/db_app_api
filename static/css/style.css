@@ -1,0 +1,12 @@
+.main-div {
+	display: flex;
+	justify-content: space-between;
+	/*background: #aca7a7;*/
+}
+
+.sub-div {
+	flex: 1;
+
+	/*border: 1px solid #34cf19; */
+	padding: 10px;
+}

@@ -71,11 +71,13 @@ class Book(db.Model):
 
     __tablename__ = "books"
     id = db.Column(db.Integer, primary_key=True, autoincrement=True)
-    author_id = db.Column(db.Integer, db.ForeignKey("authors.id"))
-    user_id = db.Column(db.Integer, db.ForeignKey("users.id"))
+    isbn = db.Column(db.String(100), nullable=True)
     title = db.Column(db.String(100), nullable=False)
     condition = db.Column(db.String(100), nullable=False)
+    publication_year = db.Column(db.Integer, nullable=True)
     added_date = db.Column(db.DateTime, default=datetime.utcnow)
+    author_id = db.Column(db.Integer, db.ForeignKey("authors.id"))
+    user_id = db.Column(db.Integer, db.ForeignKey("users.id"))
 
     def __repr__(self) -> str:
         return f"Book('{self.title}', '{self.author}', '{self.added_date}')"

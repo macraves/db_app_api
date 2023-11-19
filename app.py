@@ -3,7 +3,7 @@ from flask import Flask, render_template
 from flask_migrate import Migrate
 from flask_login import LoginManager
 from flask_ckeditor import CKEditor
-from data_models import datetime, db, MYSQL_URI, User
+from data_models import datetime, db, MYSQL_URI, Author, Book, Post, User
 from allwebforms import SearchPostContent
 from author.aroutes import author_bp
 from book.broutes import book_bp
@@ -53,8 +53,14 @@ def load_user(user_id):
 
 @app.route("/")
 def index():
-    """Index page"""
-    return render_template("index.html")
+    """General view of all contents"""
+    authors = Author.query.all()
+    books = Book.query.all()
+    posts = Post.query.all()
+    users = User.query.all()
+    return render_template(
+        "index.html", authors=authors, books=books, posts=posts, users=users
+    )
 
 
 @app.route("/date", methods=["GET", "POST"])
