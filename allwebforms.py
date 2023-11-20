@@ -7,16 +7,15 @@ from wtforms.validators import DataRequired, EqualTo, Length, Optional
 
 # from wtforms.widgets import TextArea
 from flask_ckeditor import CKEditorField
-from wtforms import (
+from wtforms import (  # DateTimeField,
+    DateField,
+    PasswordField,
     StringField,
     SubmitField,
-    PasswordField,
-    # DateTimeField,
-    DateField,
 )
 
 
-class SearchPostContent(FlaskForm):
+class SearchForm(FlaskForm):
     """Users instance, every user has its own name and unique email."""
 
     searched = StringField("Searched", validators=[DataRequired()])
@@ -30,12 +29,12 @@ class AuthorForm(FlaskForm):
     name = StringField("Name", validators=[Length(min=1)])
     birth_date = DateField(
         "Birth Date",
-        format="%Y-%m-%d",  # Specify the format for displaying the date
+        format="%Y-%m-%d",
         validators=[Optional()],
     )
     death_date = DateField(
         "Death Date",
-        format="%Y-%m-%d",  # Specify the format for displaying the date
+        format="%Y-%m-%d",
         validators=[Optional()],
     )
     submit = SubmitField("Submit")
@@ -46,6 +45,12 @@ class BookForm(FlaskForm):
 
     title = StringField("Title", validators=[DataRequired()])
     author = StringField("Author", validators=[DataRequired()])
+    isbn = StringField("ISBN", validators=[Optional()])
+    publication_year = DateField(
+        "Publication Year",
+        format="%Y-%m-%d",
+        validators=[Optional()],
+    )
     condition = StringField("Condition", validators=[Optional()])
     submit = SubmitField("Submit")
 

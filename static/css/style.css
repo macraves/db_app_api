@@ -1,12 +1,39 @@
+.dropdown {
+	margin-right: 10px;
+	margin-left: 10px;
+}
 .main-div {
 	display: flex;
 	justify-content: space-between;
-	/*background: #aca7a7;*/
+	/* border: 3px solid #141414; */
 }
 
 .sub-div {
 	flex: 1;
+	/* border: 2px solid #da1b1b; */
+	padding: 20px;
+}
 
-	/*border: 1px solid #34cf19; */
+.book-info {
+	display: flex;
+	align-items: center;
+	border: 1px solid green;
+}
+
+.book-cover img {
+	width: 100%;
+	height: 100%;
+	object-fit: cover;
+	border: 1px solid blueviolet;
+}
+
+.book-cover img {
+	max-width: 100px;
+	max-height: 150px;
+	border: 1px solid #141414;
+}
+
+#border {
+	border: 1px solid blue;
 	padding: 10px;
 }

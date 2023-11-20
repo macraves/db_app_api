@@ -1,3 +1,134 @@
 {% extends 'base.html' %}{% block content %}
-<h1>Index page</h1>
+{% if current_user == 1%}
+<h5>User ID 1 is the Admin can change whole content</h5>
+{% endif %}
+<!-- main -->
+<div class="shadow p-3 mb-5 bg-body-tertiary rounded main-div">  
+    <!-- sub 1 -->
+    <div class="shadow p-3 mb-5 bg-body-tertiary rounded sub-div">
+        <h3>Authors</h3>
+        {% for author in authors %}
+        <table class="table table-hover table-bordered table-striped">
+            <tr>
+                <td>
+                    <div><strong>Author ID: {{ author.id}}</strong></div>
+                    <div><strong>Author Name: {{ author.name}}</strong></div>
+                    <div><strong>Brith Date: {{ author.birth_date }}</strong></div>
+                    <div><strong>Death Date: {{ author.death_date }}</div>
+                    <div><strong>Date Added:</strong> {{ author.added_date }}</div>
+                    {% if current_user.id == 1 %}
+                    <div>
+                        <a href="{{url_for('author.author_update',author_id=author.id)}}" class="btn btn-primary"
+                            >Update</a
+                        >
+                        <a href="{{url_for('author.author_delete',author_id=author.id)}}" class="btn btn-danger"
+                            >Delete</a
+                        >
+                    </div>
+                    {% endif %}
+                </td>
+            </tr>
+        </table>
+        {% endfor %}
+    </div>
+    <!-- sub 2 -->
+    <div class="shadow p-3 mb-5 bg-body-tertiary rounded sub-div">
+        <h3>Books</h3>
+        {% for book in books %}
+        <table class="table table-hover table-bordered table-striped">
+            <tr>
+                <td>
+                    <div>
+                        {{ book.id }}.
+                        <a href="{{url_for('book.get_book',book_id=book.id)}}"> {{ book.title }}</a>
+                    </div>
+                    <div><strong>Book ISBN: {{ book.isbn}}</strong></div>
+                    <div><strong>Author ID: {{ book.author_id}}</strong></div>
+                    <div><strong>Author Name: {{ book.author.name}}</strong></div>
+                    <div><strong>User ID: {{ book.user_id }}</strong></div>
+                    <div><strong>Condition: {{ book.condition }}</div>
+                    <div><strong>date added:</strong> {{ book.added_date }}</div>
+                    {% if current_user.id == 1 or current_user.id == book.user_id %}
+                    <div>
+                        <a
+                            href="{{url_for('book.book_update',book_id=book.id)}}"
+                            class="btn btn-primary"
+                            >Update</a
+                        >
+                        <a href="{{url_for('book.book_delete',book_id=book.id)}}" class="btn btn-danger"
+                            >Delete</a
+                        >
+                    </div>
+                    {% endif %}
+                </td>
+            </tr>
+        </table>
+        {% endfor %}
+    </div>
+    <!-- sub 3 -->
+    <div class="shadow p-3 mb-5 bg-body-tertiary rounded sub-div">
+        <h3>Posts</h3>
+        {% for post in posts %}
+        <table class="table table-hover table-bordered table-striped">
+            <tr>
+                <td>
+                    <div>
+                        {{ post.id }}.
+                        <a href="{{url_for('post.get_post',post_id=post.id)}}"> {{ post.title }}</a>
+                    </div>
+                    <div><strong>Author ID: {{ post.author_id}}</strong></div>
+                    <div><strong>subtitle:</strong> {{ post.subtitle }}</div>
+                    <div><strong>content:</strong><br />{{ post.content | safe }}</div>
+                    <div><strong>date posted:</strong> {{ post.added_date }}</div>
+                    {% if current_user.id == 1 or current_user.id == post.author_id %}
+                    <div>
+                        <a
+                            href="{{url_for('post.post_update',post_id=post.id)}}"
+                            class="btn btn-primary"
+                            >Update</a
+                        >
+                        <a href="{{url_for('post.post_delete',post_id=post.id)}}" class="btn btn-danger"
+                            >Delete</a
+                        >
+                    </div>
+                    {% endif %}
+                </td>
+            </tr>
+        </table>
+        {% endfor %}
+    </div>
+    <div class="shadow p-3 mb-5 bg-body-tertiary rounded sub-div">
+        <h3>Users</h3>
+        {% for user in users %}
+        <table class="table table-hover table-bordered table-striped">
+            <tr>
+                <td>
+                    <div>
+                        {{ user.id }}.
+                        <a href="{{url_for('user.get_user',user_id=user.id)}}"> {{ user.name }}</a>
+                    </div>
+                    <div><strong>User ID: {{ user.id}}</strong></div>
+                    <div><strong>username:</strong> {{ user.username }}</div>
+                    <div><strong>name:</strong><br />{{ user.name }}</div>
+                    <div><strong>email:</strong> {{ user.email }}</div>
+                    <div><strong>about user:</strong> {{ user.about_user }}</div>
+                    <div><strong>added date:</strong> {{ user.added_date }}</div>
+                    {% if current_user.id == 1 or current_user.id == user.author_id %}
+                    <div>
+                        <a
+                            href="{{url_for('user.user_update',user_id=user.id)}}"
+                            class="btn btn-primary"
+                            >Update</a
+                        >
+                        <a href="{{url_for('user.user_delete',user_id=user.id)}}" class="btn btn-danger"
+                            >Delete</a
+                        >
+                    </div>
+                    {% endif %}
+                </td>
+            </tr>
+        </table>
+        {% endfor %}
+    </div>
+</div>
 {% endblock%}

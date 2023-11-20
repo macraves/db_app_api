@@ -73,9 +73,10 @@ class Book(db.Model):
     id = db.Column(db.Integer, primary_key=True, autoincrement=True)
     isbn = db.Column(db.String(100), nullable=True)
     title = db.Column(db.String(100), nullable=False)
-    condition = db.Column(db.String(100), nullable=False)
+    condition = db.Column(db.String(100), nullable=True)
     publication_year = db.Column(db.Integer, nullable=True)
     added_date = db.Column(db.DateTime, default=datetime.utcnow)
+    cover_url = db.Column(db.String(255), nullable=True)
     author_id = db.Column(db.Integer, db.ForeignKey("authors.id"))
     user_id = db.Column(db.Integer, db.ForeignKey("users.id"))
 

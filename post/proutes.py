@@ -1,7 +1,7 @@
 """post related routes"""
 from flask import Blueprint, flash, redirect, render_template, request, url_for
 from flask_login import current_user, login_required
-from allwebforms import PostForm, SearchPostContent
+from allwebforms import PostForm, SearchForm
 from data_models import db, Post
 
 # Create blueprints connection
@@ -26,7 +26,7 @@ def reset_post_form(form):
 @post_bp.route("/search", methods=["POST"])
 def search():
     """Search function"""
-    form = SearchPostContent()
+    form = SearchForm()
     if form.validate_on_submit():
         searched = form.searched.data
         posts = Post.query.filter(Post.content.like("%" + searched + "%"))

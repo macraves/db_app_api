@@ -9,7 +9,7 @@
 		<div>{{ post.content | safe }}</div>
 		<br />
 		<div>
-			<a href="{{url_for('post.posts_all')}}" class="btn btn-secondary">Back</a>
+			<a href="{{url_for('post.posts_all')}}" class="btn btn-secondary">Posts</a>
 			{% if current_user.id == post.author_id %}
 			<a href="{{url_for('post.post_update',post_id=post_id)}}" class="btn btn-primary"
 				>Update</a

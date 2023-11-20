@@ -4,7 +4,7 @@ from flask_migrate import Migrate
 from flask_login import LoginManager
 from flask_ckeditor import CKEditor
 from data_models import datetime, db, MYSQL_URI, Author, Book, Post, User
-from allwebforms import SearchPostContent
+from allwebforms import SearchForm
 from author.aroutes import author_bp
 from book.broutes import book_bp
 from post.proutes import post_bp
@@ -38,10 +38,11 @@ login_manager.init_app(app)
 login_manager.login_view = "user.login"
 
 
+# Injecting to base.html to extend in navbar
 @app.context_processor
 def base():
     """Injection to base.html"""
-    form = SearchPostContent()
+    form = SearchForm()
     return {"form": form}
 
 

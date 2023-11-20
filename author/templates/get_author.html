@@ -1,17 +1,18 @@
 {% extends 'base.html' %}{% block content %}
-<h1>Adding New author</h1>
+<h1>Author Info</h1>
 <div class="shadow p-3 mb-5 bg-body-tertiary rounded col-8">
 	<form method="POST">
 		{{ form.hidden_tag() }}
 		<strong>
-			<div>Author ID: {{ author.id }} Author Name: {{ author.name }}</div>
+			<div>Author ID: {{ author.id }}</div>
+			<div>Author name: {{ author.name }}</div>
 			<div>Birth Date: {{ author.birth_date }}</div>
 			<div>Death Date: {{ author.death_date }}</div>
-			<div>author Added Date: {{ author.added_date }}</div>
+			<div>Added Date: {{ author.added_date }}</div>
 		</strong>
 		<br />
 		<div>
-			<a href="{{url_for('author.authors_all')}}" class="btn btn-secondary">Back</a>
+			<a href="{{url_for('author.authors_all')}}" class="btn btn-secondary">Authors</a>
 			{% if current_user.id == 1 %}
 			<a
 				href="{{url_for('author.author_update',author_id=author_id)}}"

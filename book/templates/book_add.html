@@ -3,11 +3,19 @@
 <div class="shadow p-3 mb-5 bg-body-tertiary rounded col-8">
 	<form method="POST">
 		{{ form.hidden_tag() }}
+
 		<div>
 			{{ form.title.label(class="form-label") }}{{ form.title(class="form-control") }}
 		</div>
 		<div>
 			{{ form.author.label(class="form-label") }}{{ form.author(class="form-control") }}
+		</div>
+		<div>
+			{{ form.isbn.label(class="form-label") }} {{ form.isbn(class="form-control") }}
+		</div>
+		<div>
+			{{ form.publication_year.label(class="form-label") }} {{
+			form.publication_year(class="form-control") }}
 		</div>
 		<div>
 			{{ form.condition.label(class="form-label") }} {{

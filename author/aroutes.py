@@ -1,8 +1,8 @@
 """Author related routes"""
-from flask import Blueprint, flash, redirect, render_template, request, url_for
+from flask import Blueprint, flash, redirect, render_template, url_for
 from flask_login import current_user, login_required
 from allwebforms import AuthorForm
-from data_models import db, Author
+from data_models import db, Author, Book
 
 # Create blueprints connection
 author_bp = Blueprint(
@@ -22,6 +22,13 @@ def reset_author_form(form):
     form.name.data = ""
     form.birth_date.data = ""
     form.death_date.data = ""
+
+
+@author_bp.route("/get_author/<int:author_id>/")
+def get_author(author_id):
+    """Get author by id"""
+    author = Author.query.get_or_404(author_id)
+    return render_template("get_author.html", author=author, author_id=author_id)
 
 
 # Adding a new author
@@ -102,13 +109,21 @@ def authors_all():
 @author_bp.route("/delete/<int:author_id>/", methods=["GET", "POST"])
 @login_required
 def author_delete(author_id):
-    """Delete author"""
+    """Delete author, Only authorized user can delete author"""
     if current_user.id == 1:
         author = Author.query.get_or_404(author_id)
         if author is None:
             flash("author not found")
             return redirect("/")
-        flash(f"<strong>author ID: {author.id}</strong> has been deleted")
+
+        # First book needs to be deleted
+        books_to_delete = Book.query.filter_by(author_id=author.id).all()
+        for book in books_to_delete:
+            db.session.delete(book)
+        flash(
+            f"<strong>author ID: {author.id}</strong> and associated books have been deleted"
+        )
+        # then author
         try:
             db.session.delete(author)
             db.session.commit()

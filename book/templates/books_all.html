@@ -1,31 +1,85 @@
 {% extends 'base.html' %}{% block content %}
-<h1>ALL BOOKS</h1>
+<div class="d-flex container">
+	<h1>ALL BOOKS</h1>
+	<div class="dropdown">
+		<button
+			class="btn btn-secondary dropdown-toggle"
+			type="button"
+			data-bs-toggle="dropdown"
+			aria-expanded="false"
+		>
+			Sort by Author
+		</button>
+		<ul class="dropdown-menu">
+			<li><a class="dropdown-item" href="?sort=author&order=asc">Ascending</a></li>
+			<li><a class="dropdown-item" href="?sort=author&order=desc">Descending</a></li>
+		</ul>
+	</div>
+
+	<div class="dropdown">
+		<button
+			class="btn btn-secondary dropdown-toggle"
+			type="button"
+			data-bs-toggle="dropdown"
+			aria-expanded="false"
+		>
+			Sort by Title
+		</button>
+		<ul class="dropdown-menu">
+			<li><a class="dropdown-item" href="?sort=title&order=asc">Ascending</a></li>
+			<li><a class="dropdown-item" href="?sort=title&order=desc">Descending</a></li>
+		</ul>
+	</div>
+</div>
+
 <div class="shadow p-3 mb-5 bg-body-tertiary rounded col-8">
 	{% for book in books %}
 	<table class="table table-hover table-bordered table-striped">
 		<tr>
 			<td>
-				<div>
-					{{ book.id }}.
-					<a href="{{url_for('book.get_book',book_id=book.id)}}"> {{ book.title }}</a>
+				<div class="d-flex">
+					<div class="col-9">
+						{{ book.id }}.
+						<a href="{{url_for('book.get_book', book_id=book.id)}}">{{ book.title }}</a>
+						<br />
+						<strong>
+							ISBN: {{ book.isbn }}<br />
+							Author ID: {{ book.author_id}}<br />
+							Author Name: {{ book.author.name}}<br />
+							User ID: {{ book.user_id }}<br />
+							Condition: {{ book.condition }}<br />
+							Publication Year: {{ book.publication_year }}<br />
+							Date Added: {{ book.added_date }}<br />
+							URL: {% if book.cover_url is not defined or not book.cover_url %} NULL {%
+							else %} EXISTS {% endif %}
+						</strong>
+						{% if current_user.id == 1 or current_user.id == book.user_id %}
+						<div>
+							<a
+								href="{{url_for('book.book_update', book_id=book.id)}}"
+								class="btn btn-primary"
+								>Update</a
+							>
+							<a
+								href="{{url_for('book.book_delete', book_id=book.id)}}"
+								class="btn btn-danger"
+								>Delete</a
+							>
+						</div>
+						{% endif %}
+					</div>
+					<div class="sub-div">
+						<div>
+							<img
+								src="{{ book.cover_url }}"
+								class="object-fit-fill border rounded"
+								alt="Book Cover"
+								with="250"
+								height="240	"
+							/>
+						</div>
+					</div>
 				</div>
-				<div><strong>Author ID: {{ book.author_id}}</strong></div>
-				<div><strong>Author Name: {{ book.author.name}}</strong></div>
-				<div><strong>User ID: {{ book.user_id }}</strong></div>
-				<div><strong>Condition: {{ book.condition }}</div>
-				<div><strong>date added:</strong> {{ book.added_date }}</div>
-				{% if current_user.id == 1 or current_user.id == book.user_id %}
-				<div>
-					<a
-						href="{{url_for('book.book_update',book_id=book.id)}}"
-						class="btn btn-primary"
-						>Update</a
-					>
-					<a href="{{url_for('book.book_delete',book_id=book.id)}}" class="btn btn-danger"
-						>Delete</a
-					>
-				</div>
-				{% endif %}
 			</td>
 		</tr>
 	</table>

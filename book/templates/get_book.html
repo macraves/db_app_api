@@ -1,20 +1,22 @@
 {% extends 'base.html' %}{% block content %}
-<h1>Adding New book</h1>
+<h1>Book Info</h1>
 <div class="shadow p-3 mb-5 bg-body-tertiary rounded col-8">
 	<form method="POST">
 		{{ form.hidden_tag() }}
 		<strong>
-			<div>book ID: {{ book.id }} book title: {{ book.title }}</div>
+			<div>Book ID: {{ book.id }} book title: {{ book.title }}</div>
+			<div>ISBN: {{ book.isbn }}</div>
 			<div>author ID: {{ book.author_id }}</div>
-			<div>user ID: {{ book.user_id }}</div>
-			<div>title: {{ book.title }}</div>
-			<div>condition: {{ book.condition }}</div>
+			<div>Adder ID: {{ book.user_id }}</div>
+			<div>Title: {{ book.title }}</div>
+			<div>Condition: {{ book.condition }}</div>
+			<div>Publication_year: {{ book.publication_year }}</div>
 			<div>book Added Date: {{ book.added_date }}</div>
 		</strong>
 		<br />
 		<div>
-			<a href="{{url_for('book.books_all')}}" class="btn btn-secondary">Back</a>
-			{% if current_user.id == 1 %}
+			<a href="{{url_for('book.books_all')}}" class="btn btn-secondary">Books</a>
+			{% if current_user.id == 1 or current_user.id== book.user_id%}
 			<a href="{{url_for('book.book_update',book_id=book_id)}}" class="btn btn-primary"
 				>Update</a
 			>

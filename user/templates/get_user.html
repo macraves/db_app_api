@@ -1,0 +1,27 @@
+{% extends 'base.html' %}{% block content %}
+<h1>User Info</h1>
+<div class="shadow p-3 mb-5 bg-body-tertiary rounded col-8">
+	<form method="POST">
+		{{ form.hidden_tag() }}
+		<strong>
+			<div>User ID: {{ user.id }}</div>
+			<div>Name: {{ user.name }}</div>
+			<div>email: {{ user.email }}</div>
+			<div>about user: {{ user.about_user }}</div>
+			<div>date join: {{ user.added_date }}</div>
+		</strong>
+		<br />
+		<div>
+			<a href="{{url_for('user.users_all')}}" class="btn btn-secondary">Users</a>
+			{% if current_user.id == 1 or current_user.id == user.id %}
+			<a href="{{url_for('user.user_update',user_id=user.id)}}" class="btn btn-primary"
+				>Update</a
+			>
+			<a href="{{url_for('user.user_delete',user_id=user.id)}}" class="btn btn-danger"
+				>Delete</a
+			>
+			{% endif %}
+		</div>
+	</form>
+</div>
+{% endblock %}

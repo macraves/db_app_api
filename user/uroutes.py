@@ -2,7 +2,7 @@
 from flask import Blueprint, flash, redirect, render_template, request, url_for
 from flask_login import current_user, login_required, login_user, logout_user
 from allwebforms import UserForm, LoginForm
-from data_models import db, User
+from data_models import db, Author, Book, Post, User
 
 # Create blueprints connection
 user_bp = Blueprint("user", __name__, url_prefix="/users", template_folder="templates")
@@ -23,7 +23,18 @@ def admin():
     idx = current_user.id
     if idx == 1:
         flash("Welcome to the admin page")
-        return render_template("admin.html")
+        authors = Author.query.all()
+        books = Book.query.all()
+        posts = Post.query.all()
+        users = User.query.all()
+        return render_template(
+            "admin.html",
+            header="Admin",
+            authors=authors,
+            books=books,
+            posts=posts,
+            users=users,
+        )
     flash("You are not authorized to view this page")
     return redirect("/users")
 
@@ -80,6 +91,16 @@ def logout():
     logout_user()
     flash("User logged out successfully")
     return redirect("/users/login")
+
+
+@user_bp.route("get_user/<int:user_id>/")
+def get_user(user_id):
+    """Get user"""
+    user = User.query.get_or_404(user_id)
+    if user is None:
+        flash("User not found")
+        return redirect("/users")
+    return render_template("get_user.html", header="Get User", user=user)
 
 
 @user_bp.route("/")
